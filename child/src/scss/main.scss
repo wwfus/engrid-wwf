@@ -1,0 +1,29 @@
+@import "breakpoints";
+@import "reset";
+@import "fonts";
+
+$title-font: "raleway", Helvetica, Roboto, Arial, sans-serif;
+$content-font: "proxima-nova", sans-serif;
+$text-color: #4f606c;
+$primary-color: #418fde;
+
+#DonationLightbox {
+  max-width: 400px;
+  margin: 0 auto;
+}
+[data-iframe-embedded] {
+  height: 100vh;
+  form.en__component {
+    scroll-snap-type: x mandatory;
+    margin: 0 auto;
+    display: grid;
+    grid-auto-flow: column;
+    gap: 1rem;
+    overscroll-behavior-x: contain;
+    & > .en__component {
+      height: 100vh;
+      width: calc(400px - 2rem);
+      scroll-snap-align: start;
+    }
+  }
+}

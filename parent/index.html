@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Webpack App</title>
+  </head>
+  <body>
+    <h1>Hello world!</h1>
+    <h2>Tip: Check your console</h2>
+    <p>
+      <a
+        data-donation-lightbox
+        href="https://support.peta.org/page/31885/donate/1?mode=DEMO"
+        data-title="Lorem ipsum Regular Link"
+        data-paragraph="Nulla dolor, pellentesque leo semper magna aenean gravida a. Sit nunc neque sagittis tortor vulputate nunc amet sollicitudin non. Orci, sapien nibh sit dignissim mi lectus volutpat ut egestas. Et tristique interdum egestas felis convallis lorem."
+        >Regular Link</a
+      >
+    </p>
+    <p>
+      <a href="#" data-donation-lightbox>Donation Lightbox Link</a><br />
+      <a
+        href="https://support.peta.org/page/31885/donate/1?mode=DEMO"
+        data-donation-lightbox
+        data-title="Lorem ipsum True Test"
+        data-paragraph="Nulla dolor, pellentesque leo semper magna aenean gravida a. Sit nunc neque sagittis tortor vulputate nunc amet sollicitudin non. Orci, sapien nibh sit dignissim mi lectus volutpat ut egestas. Et tristique interdum egestas felis convallis lorem."
+        >My True Test</a
+      ><br />
+      <a
+        href="https://support.peta.org/page/31885/donate/1?mode=DEMO"
+        data-donation-lightbox
+        data-title="My Title Yo"
+        data-paragraph="Nothing here"
+        data-bg_color="#FF0000"
+        >Donation Lightbox Yo</a
+      >
+    </p>
+    <script>
+      DonationLightboxOptions = {
+        image: "https://source.unsplash.com/1280x720/?animals",
+        logo: "https://www.peta.org/wp-content/themes/petaorg/assets/images/peta-logo.svg",
+        footer:
+          "Donations to PETA are in U.S. dollars and are tax-deductible to the fullest extent allowed by U.S. law. PETA's tax ID number is 52-1218336.",
+      };
+    </script>
+  </body>
+</html>

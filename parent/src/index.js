@@ -6,6 +6,6 @@ window.addEventListener("load", function () {
   let donationLightbox = new DonationLightbox();
   // Set default options
   if (typeof window.DonationLightboxOptions !== "undefined") {
-    donationLightbox.setDefaultOptions(window.DonationLightboxOptions);
+    donationLightbox.setOptions(window.DonationLightboxOptions);
   }
 });

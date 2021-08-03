@@ -3,7 +3,7 @@ export class DonationLightbox {
   constructor() {
     console.log("DonationLightbox: constructor");
     window.dataLayer = window.dataLayer || [];
-    this.options = {
+    this.defaultOptions = {
       image: "",
       logo: "",
       title: "",
@@ -12,13 +12,21 @@ export class DonationLightbox {
       bg_color: "#254d68",
       txt_color: "#FFFFFF",
     };
+    this.options = { ...this.defaultOptions };
     this.init();
     console.log(confetti.create);
   }
-  setDefaultOptions(options) {
+  setOptions(options) {
     this.options = Object.assign(this.options, options);
   }
   loadOptions(element) {
+    if (typeof window.DonationLightboxOptions !== "undefined") {
+      this.setOptions(
+        Object.assign(this.defaultOptions, window.DonationLightboxOptions)
+      );
+    } else {
+      this.setOptions(this.defaultOptions);
+    }
     // Get Data Attributes
     let data = element.dataset;
     console.log("DonationLightbox: loadOptions: data: " + data);
@@ -163,6 +171,9 @@ export class DonationLightbox {
     }
     if (status === "close") {
       this.close(event);
+    }
+    if (status === "celebrate") {
+      this.celebrate();
     }
   }
   error(error, event) {

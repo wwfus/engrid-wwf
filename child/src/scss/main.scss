@@ -1,95 +1,97 @@
-@import "breakpoints";
-@import "reset";
-@import "fonts";
+// This has all been rolled into: https://github.com/4site-interactive-studios/engrid-peta
 
-$title-font: "raleway", Helvetica, Roboto, Arial, sans-serif;
-$content-font: "proxima-nova", sans-serif;
-$text-color: #4f606c;
-$primary-color: #418fde;
+// @import "breakpoints";
+// @import "reset";
+// @import "fonts";
 
-#DonationLightbox {
-  max-width: 400px;
-  margin: 0 auto;
-  form.en__component > .en__component {
-    position: relative;
-    .section-navigation {
-      position: absolute;
-      height: 100px;
-      bottom: 0;
-      width: 260px;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0) 0%,
-        rgba(255, 255, 255, 1) 50%,
-        rgba(255, 255, 255, 1) 100%
-      );
+// $title-font: "raleway", Helvetica, Roboto, Arial, sans-serif;
+// $content-font: "proxima-nova", sans-serif;
+// $text-color: #4f606c;
+// $primary-color: #418fde;
 
-      button {
-        height: 52px;
-        min-width: 52px;
-        padding: 0 12px;
-        border-radius: 2px;
-        background-color: rgba(65, 143, 222, 0.19);
-        text-transform: uppercase;
-        color: #fff;
-        border: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        font-family: $content-font;
-        font-size: 14px;
-        font-weight: bold;
-        font-stretch: normal;
-        font-style: normal;
-        letter-spacing: 0.84px;
-        &.section-navigation__submit,
-        &.section-navigation__next {
-          background-color: #418fde;
-          opacity: 1;
-          width: 190px;
-          box-shadow: -22px 21px 29px 2px rgba(0, 172, 255, 0.13),
-            0 8px 12px 0 rgba(0, 0, 0, 0.09);
-          svg {
-            transition: 0.3s transform ease-in-out;
-            transform: translateX(15px);
-          }
-          &:hover {
-            background-color: #418fde;
-            svg {
-              transform: translateX(30px);
-            }
-          }
-        }
-        &[data-section-id="0"] {
-          width: 100%;
-        }
-        &:hover {
-          background-color: rgba(65, 143, 222, 0.32);
-        }
-      }
-    }
-    > .en__component {
-      min-width: auto;
-    }
-  }
-}
-[data-iframe-embedded] {
-  height: 100vh;
-  form.en__component {
-    scroll-snap-type: x mandatory;
-    margin: 0 auto;
-    display: grid;
-    grid-auto-flow: column;
-    overscroll-behavior-x: contain;
-    & > .en__component {
-      height: 100vh;
-      width: 400px;
-      padding: 50px 70px;
-      scroll-snap-align: start;
-    }
-  }
-}
+// #DonationLightbox {
+//   max-width: 400px;
+//   margin: 0 auto;
+//   form.en__component > .en__component {
+//     position: relative;
+//     .section-navigation {
+//       position: absolute;
+//       height: 100px;
+//       bottom: 0;
+//       width: 260px;
+//       display: flex;
+//       justify-content: space-between;
+//       align-items: flex-start;
+//       background: linear-gradient(
+//         to bottom,
+//         rgba(0, 0, 0, 0) 0%,
+//         rgba(255, 255, 255, 1) 50%,
+//         rgba(255, 255, 255, 1) 100%
+//       );
+
+//       button {
+//         height: 52px;
+//         min-width: 52px;
+//         padding: 0 12px;
+//         border-radius: 2px;
+//         background-color: rgba(65, 143, 222, 0.19);
+//         text-transform: uppercase;
+//         color: #fff;
+//         border: 0;
+//         display: flex;
+//         align-items: center;
+//         justify-content: center;
+//         cursor: pointer;
+//         font-family: $content-font;
+//         font-size: 14px;
+//         font-weight: bold;
+//         font-stretch: normal;
+//         font-style: normal;
+//         letter-spacing: 0.84px;
+//         &.section-navigation__submit,
+//         &.section-navigation__next {
+//           background-color: #418fde;
+//           opacity: 1;
+//           width: 190px;
+//           box-shadow: -22px 21px 29px 2px rgba(0, 172, 255, 0.13),
+//             0 8px 12px 0 rgba(0, 0, 0, 0.09);
+//           svg {
+//             transition: 0.3s transform ease-in-out;
+//             transform: translateX(15px);
+//           }
+//           &:hover {
+//             background-color: #418fde;
+//             svg {
+//               transform: translateX(30px);
+//             }
+//           }
+//         }
+//         &[data-section-id="0"] {
+//           width: 100%;
+//         }
+//         &:hover {
+//           background-color: rgba(65, 143, 222, 0.32);
+//         }
+//       }
+//     }
+//     > .en__component {
+//       min-width: auto;
+//     }
+//   }
+// }
+// [data-iframe-embedded] {
+//   height: 100vh;
+//   form.en__component {
+//     scroll-snap-type: x mandatory;
+//     margin: 0 auto;
+//     display: grid;
+//     grid-auto-flow: column;
+//     overscroll-behavior-x: contain;
+//     & > .en__component {
+//       height: 100vh;
+//       width: 400px;
+//       padding: 50px 70px;
+//       scroll-snap-align: start;
+//     }
+//   }
+// }

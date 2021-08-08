@@ -81,7 +81,11 @@ export class DonationLightbox {
     this.overlayID = "foursite-" + Math.random().toString(36).substring(7);
     const markup = `
             <div class="foursiteDonationLightbox-container">
-                <a href="#" class="dl-button-close"></a>
+                ${
+                  this.options.logo
+                    ? `<img class="dl-mobile-logo" src="${this.options.logo}" alt="${this.options.title}">`
+                    : ""
+                }
                 <div class="dl-content">
                   <div class="left" style="background-color: ${
                     this.options.bg_color
@@ -100,6 +104,7 @@ export class DonationLightbox {
                     </div>
                   </div>
                   <div class="right">
+                  <a href="#" class="dl-button-close"></a>
                   <div class="dl-loading">
                     <div class="spinner">
                       <div class="double-bounce1"></div>
@@ -159,15 +164,23 @@ export class DonationLightbox {
     if (message.key === "error") {
       this.error(message.value, event);
     }
+    if (message.key === "class") {
+      document
+        .querySelector(".foursiteDonationLightbox")
+        .classList.add(message.value);
+    }
   }
   status(status, event) {
     if (status === "loading") {
       document.querySelector(".dl-loading").classList.remove("is-loaded");
     }
     if (status === "loaded") {
-      // This is a test
-      this.celebrate();
       document.querySelector(".dl-loading").classList.add("is-loaded");
+    }
+    if (status === "submitted") {
+      document.getElementById("dl-iframe").src = document
+        .getElementById("dl-iframe")
+        .src.replace("/donate/1", "/donate/2");
     }
     if (status === "close") {
       this.close(event);
@@ -178,7 +191,30 @@ export class DonationLightbox {
   }
   error(error, event) {
     this.shake();
-    console.error(error);
+    // console.error(error);
+    const container = document.querySelector(
+      ".foursiteDonationLightbox .right"
+    );
+    const errorMessage = document.createElement("div");
+    errorMessage.classList.add("error-message");
+    errorMessage.innerHTML = `<p>${error}</p><a class="close" href="#">Close</a>`;
+    errorMessage.querySelector(".close").addEventListener("click", (e) => {
+      e.preventDefault();
+      errorMessage.classList.remove("is-visible");
+      // One second after close animation ends, remove the error message
+      setTimeout(() => {
+        errorMessage.remove();
+      }, 1000);
+    });
+    container.appendChild(errorMessage);
+    // 300ms after error message is added, show the error message
+    setTimeout(() => {
+      errorMessage.classList.add("is-visible");
+      // Five seconds after error message is shown, remove the error message
+      setTimeout(() => {
+        errorMessage.querySelector(".close").click();
+      }, 5000);
+    }, 300);
   }
   celebrate() {
     const duration = 5 * 1000;

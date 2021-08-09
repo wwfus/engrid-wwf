@@ -290,6 +290,8 @@ body.has-DonationLightbox {
     align-items: center;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
     @include mq(desktop) {
       border-bottom-left-radius: 0;
     }

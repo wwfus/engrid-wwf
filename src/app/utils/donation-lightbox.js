@@ -12,9 +12,9 @@ export class DonationLightbox {
       bg_color: "#254d68",
       txt_color: "#FFFFFF",
     };
+    this.donationinfo = {};
     this.options = { ...this.defaultOptions };
     this.init();
-    console.log(confetti.create);
   }
   setOptions(options) {
     this.options = Object.assign(this.options, options);
@@ -169,6 +169,13 @@ export class DonationLightbox {
         .querySelector(".foursiteDonationLightbox")
         .classList.add(message.value);
     }
+    if (message.key === "donationinfo") {
+      this.donationinfo = JSON.parse(message.value);
+      console.log(
+        "DonationLightbox: receiveMessage: donationinfo: ",
+        this.donationinfo
+      );
+    }
   }
   status(status, event) {
     if (status === "loading") {
@@ -178,9 +185,13 @@ export class DonationLightbox {
       document.querySelector(".dl-loading").classList.add("is-loaded");
     }
     if (status === "submitted") {
+      this.donationinfo.frequency =
+        this.donationinfo.frequency == "no" ? "" : this.donationinfo.frequency;
+      let userData = new URLSearchParams(this.donationinfo).toString();
+      console.log("DonationLightbox: status: userData: ", userData);
       document.getElementById("dl-iframe").src = document
         .getElementById("dl-iframe")
-        .src.replace("/donate/1", "/donate/2");
+        .src.replace("/donate/1", "/donate/2?" + userData);
     }
     if (status === "close") {
       this.close(event);

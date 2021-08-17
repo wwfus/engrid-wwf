@@ -11,6 +11,7 @@ export class DonationLightbox {
       footer: "",
       bg_color: "#254d68",
       txt_color: "#FFFFFF",
+      form_color: "#418fde",
     };
     this.donationinfo = {};
     this.options = { ...this.defaultOptions };
@@ -52,6 +53,9 @@ export class DonationLightbox {
     if ("txt_color" in data) {
       this.options.txt_color = data.txt_color;
     }
+    if ("form_color" in data) {
+      this.options.form_color = data.form_color;
+    }
   }
   init() {
     console.log("DonationLightbox: init");
@@ -79,6 +83,8 @@ export class DonationLightbox {
       this.overlay.parentNode.removeChild(this.overlay);
     }
     this.overlayID = "foursite-" + Math.random().toString(36).substring(7);
+    let href = new URL(element.href);
+    href.searchParams.append("color", this.options.form_color);
     const markup = `
             <div class="foursiteDonationLightbox-container">
                 ${
@@ -105,15 +111,15 @@ export class DonationLightbox {
                   </div>
                   <div class="right">
                   <a href="#" class="dl-button-close"></a>
-                  <div class="dl-loading">
+                  <div class="dl-loading" style="background-color: ${
+                    this.options.form_color
+                  }">
                     <div class="spinner">
                       <div class="double-bounce1"></div>
                       <div class="double-bounce2"></div>
                     </div>
                   </div>
-                    <iframe loading='lazy' id='dl-iframe' width='100%' scrolling='no' class='dl-iframe' src='${
-                      element.href
-                    }' frameborder='0' allowfullscreen></iframe>
+                    <iframe loading='lazy' id='dl-iframe' width='100%' scrolling='no' class='dl-iframe' src='${href}' frameborder='0' allowfullscreen></iframe>
                   </div>
                 </div>
                 <div class="dl-footer">

@@ -27,6 +27,7 @@ Every option can be set as a data attribute on the `a` tag, or as a JavaScript o
 - **paragraph** - Content of the Lightbox.
 - **bg_color** - HEX color of the left column background.
 - **text_color** - HEX color of the left column text.
+- **form_color** - HEX color for the form theme.
 - **footer** - Content of the footer.
 
 Because the page can have multiple lightbox links, you can share options between them by creating a `DonationLightboxOptions` object. Example:

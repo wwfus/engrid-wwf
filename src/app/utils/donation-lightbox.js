@@ -12,6 +12,8 @@ export class DonationLightbox {
       bg_color: "#254d68",
       txt_color: "#FFFFFF",
       form_color: "#418fde",
+      url: null,
+      cookie_hours: 24,
     };
     this.donationinfo = {};
     this.options = { ...this.defaultOptions };
@@ -20,13 +22,16 @@ export class DonationLightbox {
   setOptions(options) {
     this.options = Object.assign(this.options, options);
   }
-  loadOptions(element) {
+  loadOptions(element = null) {
     if (typeof window.DonationLightboxOptions !== "undefined") {
       this.setOptions(
         Object.assign(this.defaultOptions, window.DonationLightboxOptions)
       );
     } else {
       this.setOptions(this.defaultOptions);
+    }
+    if (!element) {
+      return;
     }
     // Get Data Attributes
     let data = element.dataset;
@@ -73,17 +78,31 @@ export class DonationLightbox {
       );
     });
     window.addEventListener("message", this.receiveMessage.bind(this), false);
+    if (
+      typeof window.DonationLightboxOptions !== "undefined" &&
+      window.DonationLightboxOptions.hasOwnProperty("url") &&
+      !this.getCookie()
+    ) {
+      this.build(window.DonationLightboxOptions.url);
+    }
   }
   build(event) {
-    // Get clicked element
-    let element = event.target;
-    this.loadOptions(element);
+    console.log("DonationLightbox: build", typeof event);
+    let href = null;
+    if (typeof event === "object") {
+      // Get clicked element
+      let element = event.target;
+      this.loadOptions(element);
+      href = new URL(element.href);
+    } else {
+      href = new URL(event);
+      this.loadOptions();
+    }
     // Delete overlay if exists
     if (this.overlay) {
       this.overlay.parentNode.removeChild(this.overlay);
     }
     this.overlayID = "foursite-" + Math.random().toString(36).substring(7);
-    let href = new URL(element.href);
     href.searchParams.append("color", this.options.form_color);
     const markup = `
             <div class="foursiteDonationLightbox-container">
@@ -105,8 +124,12 @@ export class DonationLightbox {
       this.options.title
     }" />
                     <div class="dl-container">
-                      <h1 class="dl-title">${this.options.title}</h1>
-                      <p class="dl-paragraph">${this.options.paragraph}</p>
+                      <h1 class="dl-title" style="color: ${
+                        this.options.txt_color
+                      }">${this.options.title}</h1>
+                      <p class="dl-paragraph" style="color: ${
+                        this.options.txt_color
+                      }">${this.options.paragraph}</p>
                     </div>
                   </div>
                   <div class="right">
@@ -159,6 +182,9 @@ export class DonationLightbox {
     e.preventDefault();
     this.overlay.classList.add("is-hidden");
     document.body.classList.remove("has-DonationLightbox");
+    if (this.options.url) {
+      this.setCookie(this.options.cookie_hours);
+    }
   }
   // Receive a message from the child iframe
   receiveMessage(event) {
@@ -193,11 +219,13 @@ export class DonationLightbox {
     if (status === "submitted") {
       this.donationinfo.frequency =
         this.donationinfo.frequency == "no" ? "" : this.donationinfo.frequency;
-      let userData = new URLSearchParams(this.donationinfo).toString();
-      console.log("DonationLightbox: status: userData: ", userData);
-      document.getElementById("dl-iframe").src = document
-        .getElementById("dl-iframe")
-        .src.replace("/donate/1", "/donate/2?" + userData);
+      let iFrameUrl = new URL(document.getElementById("dl-iframe").src);
+      for (const key in this.donationinfo) {
+        iFrameUrl.searchParams.append(key, this.donationinfo[key]);
+      }
+      document.getElementById("dl-iframe").src = iFrameUrl
+        .toString()
+        .replace("/donate/1", "/donate/2");
     }
     if (status === "close") {
       this.close(event);
@@ -217,7 +245,7 @@ export class DonationLightbox {
     errorMessage.innerHTML = `<p>${error}</p><a class="close" href="#">Close</a>`;
     errorMessage.querySelector(".close").addEventListener("click", (e) => {
       e.preventDefault();
-      errorMessage.classList.remove("is-visible");
+      errorMessage.classList.remove("dl-is-visible");
       // One second after close animation ends, remove the error message
       setTimeout(() => {
         errorMessage.remove();
@@ -226,7 +254,7 @@ export class DonationLightbox {
     container.appendChild(errorMessage);
     // 300ms after error message is added, show the error message
     setTimeout(() => {
-      errorMessage.classList.add("is-visible");
+      errorMessage.classList.add("dl-is-visible");
       // Five seconds after error message is shown, remove the error message
       setTimeout(() => {
         errorMessage.querySelector(".close").click();
@@ -241,6 +269,7 @@ export class DonationLightbox {
       spread: 360,
       ticks: 60,
       zIndex: 100000,
+      useWorker: false,
     };
 
     const randomInRange = (min, max) => {
@@ -279,5 +308,29 @@ export class DonationLightbox {
         element.classList.remove("shake");
       }, 1000);
     }
+  }
+  setCookie(hours = 24, path = "/") {
+    const expires = new Date(Date.now() + hours * 36e5).toUTCString();
+    document.cookie =
+      "HideDonationLightbox" +
+      "=" +
+      encodeURIComponent(true) +
+      "; expires=" +
+      expires +
+      "; path=" +
+      path;
+  }
+
+  getCookie() {
+    return document.cookie.split("; ").reduce((r, v) => {
+      const parts = v.split("=");
+      return parts[0] === "HideDonationLightbox"
+        ? decodeURIComponent(parts[1])
+        : r;
+    }, "");
+  }
+
+  deleteCookie(path = "/") {
+    setCookie("HideDonationLightbox", "", -1, path);
   }
 }

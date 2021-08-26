@@ -44,6 +44,7 @@ body.has-DonationLightbox {
 
   .dl-button-close {
     position: absolute;
+    box-sizing: content-box;
     right: 10px;
     top: 10px;
     width: 25px;
@@ -127,6 +128,8 @@ body.has-DonationLightbox {
           padding: 0 48px;
           .dl-title {
             padding-top: 40px;
+            margin-top: 0;
+            margin-bottom: 10px;
             font-family: $title-font;
             font-size: 24px;
             font-weight: bold;
@@ -265,6 +268,7 @@ body.has-DonationLightbox {
     }
     .dl-footer {
       color: #fff;
+      margin: 12px 0;
       p {
         font-size: 12px;
         font-weight: 600;
@@ -273,6 +277,7 @@ body.has-DonationLightbox {
         line-height: 1;
         letter-spacing: normal;
         text-align: center;
+        margin: 0;
       }
     }
   }
@@ -317,6 +322,7 @@ body.has-DonationLightbox {
       text-align: left;
       padding: 10px 20px;
       width: 100%;
+      margin: 0;
     }
     .close {
       position: relative;
@@ -326,6 +332,7 @@ body.has-DonationLightbox {
       padding-right: 10px;
       text-indent: -100vw;
       overflow: hidden;
+      box-sizing: content-box;
       &:hover {
         &::before {
           transform: rotate(45deg) scale(1.5);
@@ -353,7 +360,7 @@ body.has-DonationLightbox {
         transform: rotate(-45deg);
       }
     }
-    &.is-visible {
+    &.dl-is-visible {
       bottom: 0;
     }
   }

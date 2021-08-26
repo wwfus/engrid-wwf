@@ -29,6 +29,8 @@ Every option can be set as a data attribute on the `a` tag, or as a JavaScript o
 - **text_color** - HEX color of the left column text.
 - **form_color** - HEX color for the form theme.
 - **footer** - Content of the footer.
+- **url** - URL of the donation page - use this option if you want the lightbox to automatically open when the page loads.
+- **cookie_hours** - Number of hours to not auto open the lightbox after the user closes it.
 
 Because the page can have multiple lightbox links, you can share options between them by creating a `DonationLightboxOptions` object. Example:
 

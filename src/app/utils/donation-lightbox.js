@@ -78,10 +78,16 @@ export class DonationLightbox {
       );
     });
     window.addEventListener("message", this.receiveMessage.bind(this), false);
+    // This is for disable mobile view
+    const viewportWidth = Math.max(
+      document.documentElement.clientWidth || 0,
+      window.innerWidth || 0
+    );
     if (
       typeof window.DonationLightboxOptions !== "undefined" &&
       window.DonationLightboxOptions.hasOwnProperty("url") &&
-      !this.getCookie()
+      !this.getCookie() &&
+      viewportWidth > 899
     ) {
       this.build(window.DonationLightboxOptions.url);
     }

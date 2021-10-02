@@ -35,7 +35,7 @@ export class DonationLightbox {
     }
     // Get Data Attributes
     let data = element.dataset;
-    console.log("DonationLightbox: loadOptions: data: " + data);
+    console.log("DonationLightbox: loadOptions: data: ", data);
     // Set Options
     if ("image" in data) {
       this.options.image = data.image;

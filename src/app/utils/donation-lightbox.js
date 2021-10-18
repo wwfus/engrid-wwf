@@ -17,6 +17,7 @@ export class DonationLightbox {
     };
     this.donationinfo = {};
     this.options = { ...this.defaultOptions };
+    this.animationEnd = false;
     this.init();
   }
   setOptions(options) {
@@ -126,17 +127,39 @@ export class DonationLightbox {
                         ? `<img class="dl-logo" src="${this.options.logo}" alt="${this.options.title}">`
                         : ""
                     }
+                    <div class="dl-container">
                     <img class="dl-hero" src="${this.options.image}" alt="${
       this.options.title
     }" />
-                    <div class="dl-container">
-                      <h1 class="dl-title" style="color: ${
-                        this.options.txt_color
-                      }">${this.options.title}</h1>
-                      <p class="dl-paragraph" style="color: ${
-                        this.options.txt_color
-                      }">${this.options.paragraph}</p>
+                      <div class="dl-container-inner">
+                          <h1 class="dl-title" style="color: ${
+                            this.options.txt_color
+                          }">${this.options.title}</h1>
+                          <p class="dl-paragraph" style="color: ${
+                            this.options.txt_color
+                          }">${this.options.paragraph}</p>
+                      </div>
+                      <div class="dl-celebration">
+                          <div class="frame frame1">
+                              <h3>and the animals</h3>
+                              <h2>THANK YOU!</h2>
+                          </div>
+                          <div class="frame frame2">
+                            <div id="bunnyAnimation"></div>
+                          </div>
+                          <div class="frame frame3">
+                            <h2 class="name">Fernando,</h2>
+                            <h2 class="phrase">you are a hero to animals.</h2>
+                            <h2 class="phrase">you are stopping suffering.</h2>
+                            <h2 class="phrase">you are improving lives.</h2>
+                            <h2 class="phrase">you are compassionate.</h2>
+                            <h2 class="phrase">you are wonderful.</h2>
+                          </div>
+
+                      </div>
                     </div>
+                    
+                    
                   </div>
                   <div class="right">
                   <a href="#" class="dl-button-close"></a>
@@ -213,6 +236,16 @@ export class DonationLightbox {
         "DonationLightbox: receiveMessage: donationinfo: ",
         this.donationinfo
       );
+    }
+    if (message.key === "firstname") {
+      const firstname = message.value;
+      const nameHeading = document.querySelector(".dl-celebration h2.name");
+      if (nameHeading) {
+        nameHeading.innerHTML = firstname + ",";
+        if (firstname.length > 12) {
+          nameHeading.classList.add("big-name");
+        }
+      }
     }
   }
   status(status, event) {
@@ -304,6 +337,126 @@ export class DonationLightbox {
         })
       );
     }, 250);
+    // Left Animation
+    const leftContainer = document.querySelector(
+      `#${this.overlayID} .dl-content .left`
+    );
+    if (leftContainer) {
+      leftContainer.classList.add("celebrating");
+      const newLogo =
+        'data:image/svg+xml;utf8,<svg width="146" height="146" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M73 146c40.317 0 73-32.683 73-73S113.317 0 73 0 0 32.683 0 73s32.683 73 73 73z" fill="%23fff"/><path d="M36.942 53.147H25.828L14.49 95.107h9.391l4.553-16.321-.502 2.15c6.335.55 20.226.661 22.235-14.668 2.003-14.83-13.225-13.121-13.225-13.121zm1.056 17.533c-3.168 2.978-7.725 1.93-7.725 1.93l1.278-4.686 1.722-6.232c.667-.055 5.224-.551 6.503.498 1.39 1.103.39 6.451-1.78 8.492l.002-.002zM78.513 56.345a6.223 6.223 0 0 0-3.169-2.537c-8.057-2.595-14.671 3.529-19.284 9.428a37.298 37.298 0 0 0-7.558 21.394c.222 4.577 1.334 9.704 6.058 11.524 7.724 1.93 13.394-4.577 17.56-9.98.444-.771 1.222-1.433 1.222-2.316-.333-.165-.612-.44-1.005-.44a29.047 29.047 0 0 1-2.89 3.693c-2.666 2.592-6.057 4.632-9.948 3.75-4.279-1.93-4.446-6.893-4.056-11.193.193-1.652.566-3.28 1.112-4.852l2.889-.828c6.39-2.095 13.944-2.536 18.228-8.932 1.445-2.427 2.612-6.065.835-8.713l.006.002zM64.286 70.46c-8.725 2.812-6.558 1.654-6.558 1.654s6.668-19.74 13.448-17.425c6.892 2.316 1.885 12.963-6.892 15.77h.002zM83.46 53.312l27.899-.165-2.445 9.042-9.114.166-9.282 32.752H80.29L89.24 62.3h-8.392l2.613-8.988zM119.471 53.256l-20.34 41.796h10.504l3.224-6.892h9.448v6.837l9.226-.055V53.147l-12.06.11h-.002zm-2.834 26.631 5.558-11.965.055-.165v12.13h-5.613z" fill="%23FEBA4B"/></svg>';
+      const logo = leftContainer.querySelector(".dl-logo");
+      if (logo) {
+        logo.src = newLogo;
+      }
+      this.loadScript(
+        "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.0/gsap.min.js",
+        () => {
+          const tl = gsap.timeline({
+            onComplete: this.startBunny(),
+          });
+          if (logo) {
+            tl.to(logo, {
+              duration: 1,
+              x: "50%",
+              right: "50%",
+              top: "155px",
+              maxWidth: "145px",
+              ease: "power1.inOut",
+            });
+          }
+          tl.to(
+            ".frame1",
+            {
+              bottom: "150px",
+              duration: 1,
+              ease: "power1.inOut",
+            },
+            ">-1"
+          );
+          if (logo) {
+            tl.to(logo, {
+              duration: 1,
+              delay: 1,
+              top: "20px",
+              maxWidth: "98px",
+              ease: "power1.inOut",
+            });
+          }
+          tl.to(
+            ".frame1",
+            {
+              bottom: "360px",
+              duration: 1,
+              ease: "power1.inOut",
+            },
+            ">-1"
+          );
+        }
+      );
+    }
+  }
+  startBunny() {
+    this.loadScript(
+      "https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.14/lottie.min.js",
+      () => {
+        const tl2 = gsap.timeline();
+        tl2.set([...document.querySelectorAll(".frame3 .phrase")].slice(1), {
+          right: "10000vw",
+        });
+        tl2.to(".frame2", {
+          opacity: "1",
+          duration: 1,
+          ease: "power1.inOut",
+        });
+        tl2.add(() => {
+          const anim = bodymovin.loadAnimation({
+            container: document.querySelector("#bunnyAnimation"),
+            renderer: "svg",
+            loop: false,
+            autoplay: true,
+            path: "https://000665513.codepen.website/data.json",
+          });
+          anim.addEventListener("complete", () => {
+            anim.goToAndPlay(130, true);
+            this.startSlider();
+          });
+        }, "+=0.5");
+        // Make the text grow
+        tl2.fromTo(".frame3", 1, { scale: 0 }, { scale: 1 }, "+=6.5");
+      }
+    );
+  }
+  startSlider() {
+    // return;
+    if (this.animationEnd) {
+      return;
+    }
+    let $slides = [...document.querySelectorAll(".frame3 .phrase")];
+    let currentSlide = 0;
+
+    TweenLite.set($slides.slice(1), { right: "600px" }); // Hide all but the first slide
+
+    const nextSlide = function () {
+      TweenLite.to($slides[currentSlide], 1, { right: "-600px" });
+
+      if (currentSlide < $slides.length - 1) {
+        currentSlide++;
+      } else {
+        currentSlide = 0;
+      }
+
+      TweenLite.fromTo(
+        $slides[currentSlide],
+        1,
+        { right: "600px" },
+        { right: "0px" }
+      );
+      TweenLite.delayedCall(3, nextSlide);
+    };
+    TweenLite.delayedCall(0.1, nextSlide); // Start the timer
+
+    this.animationEnd = true;
   }
   shake() {
     const element = document.querySelector(".dl-content");
@@ -338,5 +491,14 @@ export class DonationLightbox {
 
   deleteCookie(path = "/") {
     setCookie("HideDonationLightbox", "", -1, path);
+  }
+  loadScript(url, callback) {
+    const script = document.createElement("script");
+    script.src = url;
+    document.body.appendChild(script);
+
+    script.onload = () => {
+      if (callback) callback();
+    };
   }
 }

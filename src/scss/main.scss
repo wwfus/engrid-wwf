@@ -356,7 +356,11 @@ body.has-DonationLightbox {
     }
     .dl-footer {
       color: #fff;
-      margin: 12px 0;
+      margin: 12px auto;
+      max-width: 350px;
+      @include mq(desktop) {
+        max-width: 100%;
+      }
       p {
         font-size: 12px;
         font-weight: 600;

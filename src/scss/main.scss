@@ -100,7 +100,6 @@ body.has-DonationLightbox {
     position: relative;
     margin: auto;
     padding-top: 30px;
-    overflow: hidden;
     @include mq(desktop) {
       max-width: 880px;
       height: 550px;
@@ -113,6 +112,7 @@ body.has-DonationLightbox {
       height: 100%;
       @include mq(desktop) {
         display: flex;
+        overflow: hidden;
       }
       .left {
         position: relative;

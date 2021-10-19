@@ -112,72 +112,69 @@ export class DonationLightbox {
     this.overlayID = "foursite-" + Math.random().toString(36).substring(7);
     href.searchParams.append("color", this.options.form_color);
     const markup = `
-            <div class="foursiteDonationLightbox-container">
-                ${
-                  this.options.logo
-                    ? `<img class="dl-mobile-logo" src="${this.options.logo}" alt="${this.options.title}">`
-                    : ""
-                }
-                <div class="dl-content">
-                  <div class="left" style="background-color: ${
-                    this.options.bg_color
-                  }; color: ${this.options.txt_color}">
-                    ${
-                      this.options.logo
-                        ? `<img class="dl-logo" src="${this.options.logo}" alt="${this.options.title}">`
-                        : ""
-                    }
-                    <div class="dl-container">
-                    <img class="dl-hero" src="${this.options.image}" alt="${
+      <div class="foursiteDonationLightbox-container">
+        ${
+          this.options.logo
+            ? `<img class="dl-mobile-logo" src="${this.options.logo}" alt="${this.options.title}">`
+            : ""
+        }
+        <div class="dl-content">
+          <div class="left" style="background-color: ${
+            this.options.bg_color
+          }; color: ${this.options.txt_color}">
+            ${
+              this.options.logo
+                ? `<img class="dl-logo" src="${this.options.logo}" alt="${this.options.title}">`
+                : ""
+            }
+            <div class="dl-container">
+              <img class="dl-hero" src="${this.options.image}" alt="${
       this.options.title
     }" />
-                      <div class="dl-container-inner">
-                          <h1 class="dl-title" style="color: ${
-                            this.options.txt_color
-                          }">${this.options.title}</h1>
-                          <p class="dl-paragraph" style="color: ${
-                            this.options.txt_color
-                          }">${this.options.paragraph}</p>
-                      </div>
-                      <div class="dl-celebration">
-                          <div class="frame frame1">
-                              <h3>and the animals</h3>
-                              <h2>THANK YOU!</h2>
-                          </div>
-                          <div class="frame frame2">
-                            <div id="bunnyAnimation"></div>
-                          </div>
-                          <div class="frame frame3">
-                            <h2 class="name">Fernando,</h2>
-                            <h2 class="phrase">you are a hero to animals.</h2>
-                            <h2 class="phrase">you are stopping suffering.</h2>
-                            <h2 class="phrase">you are improving lives.</h2>
-                            <h2 class="phrase">you are compassionate.</h2>
-                            <h2 class="phrase">you are wonderful.</h2>
-                          </div>
-
-                      </div>
-                    </div>
-                    
-                    
-                  </div>
-                  <div class="right">
-                  <a href="#" class="dl-button-close"></a>
-                  <div class="dl-loading" style="background-color: ${
-                    this.options.form_color
-                  }">
-                    <div class="spinner">
-                      <div class="double-bounce1"></div>
-                      <div class="double-bounce2"></div>
-                    </div>
-                  </div>
-                    <iframe loading='lazy' id='dl-iframe' width='100%' scrolling='no' class='dl-iframe' src='${href}' frameborder='0' allowfullscreen></iframe>
-                  </div>
+              <div class="dl-container-inner">
+                <h1 class="dl-title" style="color: ${this.options.txt_color}">${
+      this.options.title
+    }</h1>
+                <p class="dl-paragraph" style="color: ${
+                  this.options.txt_color
+                }">${this.options.paragraph}</p>
+              </div>
+              <div class="dl-celebration">
+                <div class="frame frame1">
+                    <h3>and the animals</h3>
+                    <h2>THANK YOU!</h2>
                 </div>
-                <div class="dl-footer">
-                  <p>${this.options.footer}</p>                    
+                <div class="frame frame2">
+                  <div id="bunnyAnimation"></div>
                 </div>
+                <div class="frame frame3">
+                  <h2 class="name">Fernando,</h2>
+                  <h2 class="phrase">you are a hero to animals.</h2>
+                  <h2 class="phrase">you are stopping suffering.</h2>
+                  <h2 class="phrase">you are improving lives.</h2>
+                  <h2 class="phrase">you are compassionate.</h2>
+                  <h2 class="phrase">you are wonderful.</h2>
+                </div>
+              </div>
             </div>
+          </div>
+          <div class="right">
+            <a href="#" class="dl-button-close"></a>
+            <div class="dl-loading" style="background-color: ${
+              this.options.form_color
+            }">
+              <div class="spinner">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+              </div>
+            </div>
+            <iframe loading='lazy' id='dl-iframe' width='100%' scrolling='no' class='dl-iframe' src='${href}' frameborder='0' allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="dl-footer">
+          <p>${this.options.footer}</p>                    
+        </div>
+      </div>
             `;
     let overlay = document.createElement("div");
     overlay.id = this.overlayID;

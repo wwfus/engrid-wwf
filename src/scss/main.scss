@@ -358,6 +358,12 @@ body.has-DonationLightbox {
       color: #fff;
       margin: 12px auto;
       max-width: 350px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-in-out;
+      &.open {
+        max-height: 100%;
+      }
       @include mq(desktop) {
         max-width: 100%;
       }
@@ -368,7 +374,6 @@ body.has-DonationLightbox {
         font-style: normal;
         line-height: 1;
         letter-spacing: normal;
-        text-align: center;
         margin: 0;
       }
     }

@@ -212,63 +212,76 @@ export class DonationLightbox {
   receiveMessage(event) {
     console.log("DonationLightbox: receiveMessage: event: ", event);
     const message = event.data;
-    if (message.key === "status") {
-      this.status(message.value, event);
-    }
-    if (message.key === "error") {
-      this.error(message.value, event);
-    }
-    if (message.key === "class") {
-      document
-        .querySelector(".foursiteDonationLightbox")
-        .classList.add(message.value);
-    }
-    if (message.key === "donationinfo") {
-      this.donationinfo = JSON.parse(message.value);
-      console.log(
-        "DonationLightbox: receiveMessage: donationinfo: ",
-        this.donationinfo
-      );
-    }
-    if (message.key === "firstname") {
-      const firstname = message.value;
-      const nameHeading = document.querySelector(".dl-celebration h2.name");
-      if (nameHeading) {
-        nameHeading.innerHTML = firstname + ",";
-        if (firstname.length > 12) {
-          nameHeading.classList.add("big-name");
+
+    switch (message.key) {
+      case "status":
+        this.status(message.value, event);
+        break;
+      case "error":
+        this.error(message.value, event);
+        break;
+      case "class":
+        document
+          .querySelector(".foursiteDonationLightbox")
+          .classList.add(message.value);
+        break;
+      case "donationinfo":
+        this.donationinfo = JSON.parse(message.value);
+        console.log(
+          "DonationLightbox: receiveMessage: donationinfo: ",
+          this.donationinfo
+        );
+        break;
+      case "firstname":
+        const firstname = message.value;
+        const nameHeading = document.querySelector(".dl-celebration h2.name");
+        if (nameHeading) {
+          nameHeading.innerHTML = firstname + ",";
+          if (firstname.length > 12) {
+            nameHeading.classList.add("big-name");
+          }
         }
-      }
+        break;
     }
   }
   status(status, event) {
-    if (status === "loading") {
-      document.querySelector(".dl-loading").classList.remove("is-loaded");
-    }
-    if (status === "loaded") {
-      document.querySelector(".dl-loading").classList.add("is-loaded");
-    }
-    if (status === "submitted") {
-      this.donationinfo.frequency =
-        this.donationinfo.frequency == "no" ? "" : this.donationinfo.frequency;
-      let iFrameUrl = new URL(document.getElementById("dl-iframe").src);
-      for (const key in this.donationinfo) {
-        iFrameUrl.searchParams.append(key, this.donationinfo[key]);
-      }
-      document.getElementById("dl-iframe").src = iFrameUrl
-        .toString()
-        .replace("/donate/1", "/donate/2");
-    }
-    if (status === "close") {
-      this.close(event);
-    }
-    if (status === "celebrate") {
-      const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-      if (motion.matches) {
-        this.celebrate(false);
-      } else {
-        this.celebrate(true);
-      }
+    switch (status) {
+      case "loading":
+        document.querySelector(".dl-loading").classList.remove("is-loaded");
+        break;
+      case "loaded":
+        document.querySelector(".dl-loading").classList.add("is-loaded");
+        break;
+      case "submitted":
+        this.donationinfo.frequency =
+          this.donationinfo.frequency == "no"
+            ? ""
+            : this.donationinfo.frequency;
+        let iFrameUrl = new URL(document.getElementById("dl-iframe").src);
+        for (const key in this.donationinfo) {
+          iFrameUrl.searchParams.append(key, this.donationinfo[key]);
+        }
+        document.getElementById("dl-iframe").src = iFrameUrl
+          .toString()
+          .replace("/donate/1", "/donate/2");
+        break;
+      case "close":
+        this.close(event);
+        break;
+      case "celebrate":
+        const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        if (motion.matches) {
+          this.celebrate(false);
+        } else {
+          this.celebrate(true);
+        }
+        break;
+      case "footer":
+        const footer = document.querySelector(".dl-footer");
+        if (footer) {
+          footer.classList.add("open");
+        }
+        break;
     }
   }
   error(error, event) {
@@ -374,7 +387,7 @@ export class DonationLightbox {
           onComplete: this.startBunny(),
         });
         if (logo) {
-          tl.to(logo, {
+          tl.to(".dl-logo", {
             duration: 1,
             x: "50%",
             right: "50%",
@@ -393,7 +406,7 @@ export class DonationLightbox {
           ">-1"
         );
         if (logo) {
-          tl.to(logo, {
+          tl.to(".dl-logo", {
             duration: 1,
             delay: 1,
             top: "20px",
@@ -418,9 +431,6 @@ export class DonationLightbox {
       "https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.14/lottie.min.js",
       () => {
         const tl2 = gsap.timeline();
-        tl2.set([...document.querySelectorAll(".frame3 .phrase")].slice(1), {
-          right: "10000vw",
-        });
         tl2.to(".frame2", {
           opacity: "1",
           duration: 1,

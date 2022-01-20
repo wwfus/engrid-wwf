@@ -98,7 +98,7 @@ export class DonationLightbox {
     let href = null;
     if (typeof event === "object") {
       // Get clicked element
-      let element = event.target;
+      let element = event.target.closest("a");
       this.loadOptions(element);
       href = new URL(element.href);
     } else {

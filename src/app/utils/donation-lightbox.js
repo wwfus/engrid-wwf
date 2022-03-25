@@ -11,7 +11,7 @@ export class DonationLightbox {
       footer: "",
       bg_color: "#254d68",
       txt_color: "#FFFFFF",
-      form_color: "#418fde",
+      form_color: "#2375c9",
       url: null,
       cookie_hours: 24,
     };

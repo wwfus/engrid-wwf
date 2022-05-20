@@ -164,7 +164,7 @@ export class DonationLightbox {
                 <div class="double-bounce2"></div>
               </div>
             </div>
-            <iframe loading='lazy' id='dl-iframe' width='100%' scrolling='no' class='dl-iframe' src='${href}' frameborder='0' allowfullscreen></iframe>
+            <iframe allow='payment' loading='lazy' id='dl-iframe' width='100%' scrolling='no' class='dl-iframe' src='${href}' frameborder='0' allowfullscreen></iframe>
           </div>
         </div>
         <div class="dl-footer">

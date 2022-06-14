@@ -21,6 +21,7 @@ Every option can be set as a data attribute on the `a` tag, or as a JavaScript o
 
 ![Options](options.png "Engrid Multistep Lightbox Options")
 
+- **name**: The name of the lightbox. This is used to identify the lightbox in Google Analytics. Defaults to "4Site Multi-Step Splash".
 - **image** - Main Image of the Lightbox.
 - **logo** - Logo Image Used on the center of the Lightbox. On mobile, it will be scaled down and moved to the top.
 - **title** - Title of the Lightbox.
@@ -36,6 +37,7 @@ Because the page can have multiple lightbox links, you can share options between
 
 ```javascript
 DonationLightboxOptions = {
+  name: "Super Ultra Mega Donation Lightbox",
   logo: "https://www.peta.org/wp-content/themes/petaorg/assets/images/peta-logo.svg",
   footer:
     "Donations to PETA are in U.S. dollars and are tax-deductible to the fullest extent allowed by U.S. law. PETA's tax ID number is 52-1218336.",
@@ -56,6 +58,7 @@ On the example above, the logo and footer will be used for all links.
 <a
   href="https://support.peta.org/page/32254/donate/1"
   data-donation-lightbox
+  data-name="Super Ultra Mega Donation Lightbox"
   data-title="My Title Test"
   data-paragraph="My paragraph test"
   >Give Now

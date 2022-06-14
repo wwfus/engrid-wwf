@@ -4,6 +4,7 @@ export class DonationLightbox {
     console.log("DonationLightbox: constructor");
     window.dataLayer = window.dataLayer || [];
     this.defaultOptions = {
+      name: "4Site Multi-Step Splash",
       image: "",
       logo: "",
       title: "",
@@ -38,6 +39,9 @@ export class DonationLightbox {
     let data = element.dataset;
     console.log("DonationLightbox: loadOptions: data: ", data);
     // Set Options
+    if ("name" in data) {
+      this.options.name = data.name;
+    }
     if ("image" in data) {
       this.options.image = data.image;
     }
@@ -194,13 +198,19 @@ export class DonationLightbox {
     this.open();
   }
   open() {
-    window.dataLayer.push({ event: "donation_lightbox_display" });
+    const action = window.petaGA_GenericAction_Viewed ?? "Viewed";
+    const category = window.petaGA_SplashCategory ?? "Splash Page";
+    const label = window.petaGA_SplashLabel ?? this.options.name;
+    this.sendGAEvent(category, action, label);
     this.overlay.classList.remove("is-hidden");
     document.body.classList.add("has-DonationLightbox");
   }
 
   close(e) {
-    window.dataLayer.push({ event: "donation_lightbox_closed" });
+    const action = window.petaGA_GenericAction_Closed ?? "Closed";
+    const category = window.petaGA_SplashCategory ?? "Splash Page";
+    const label = window.petaGA_SplashLabel ?? this.options.name;
+    this.sendGAEvent(category, action, label);
     e.preventDefault();
     this.overlay.classList.add("is-hidden");
     document.body.classList.remove("has-DonationLightbox");
@@ -277,6 +287,10 @@ export class DonationLightbox {
         }
         break;
       case "footer":
+        const action = window.petaGA_GenericAction_Clicked ?? "Clicked";
+        const category = window.petaGA_SplashCategory ?? "Splash Page";
+        const label = window.petaGA_SplashLabel ?? this.options.name;
+        this.sendGAEvent(category, action, label);
         const footer = document.querySelector(".dl-footer");
         if (footer) {
           footer.classList.add("open");
@@ -501,5 +515,17 @@ export class DonationLightbox {
     script.onload = () => {
       if (callback) callback();
     };
+  }
+  sendGAEvent(category, action, label) {
+    if ("sendEvent" in window) {
+      window.sendEvent(category, action, label, null);
+    } else {
+      window.dataLayer.push({
+        event: "event",
+        eventCategory: category,
+        eventAction: action,
+        eventLabel: label,
+      });
+    }
   }
 }

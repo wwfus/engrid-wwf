@@ -1,6 +1,6 @@
-# Engrid Multistep Lightbox
+# Engrid Multistep Embedded
 
-This project makes it easy to create links to your Engaging Networks Donation Page as a lightbox with multiple steps.
+This project makes it easy to create Multistep Donations Forms on Engaging Networks to embed as an iFrame on your website.
 
 ## How to use
 
@@ -9,63 +9,24 @@ This project makes it easy to create links to your Engaging Networks Donation Pa
 ```html
 <script
   defer="defer"
-  src="https://acb0a5d73b67fccd4bbe-c2d8138f0ea10a18dd4c43ec3aa4240a.ssl.cf5.rackcdn.com/10003/donation-lightbox-parent.js"
+  src="https://acb0a5d73b67fccd4bbe-c2d8138f0ea10a18dd4c43ec3aa4240a.ssl.cf5.rackcdn.com/10089/donation-multistep-parent.js"
 ></script>
 ```
 
-2. The script will look for the `data-donation-lightbox` attribute on every `a` tag and make it open as a lightbox, with the options below.
-
-## Options
-
-Every option can be set as a data attribute on the `a` tag, or as a JavaScript object.
-
-![Options](options.png "Engrid Multistep Lightbox Options")
-
-- **name**: The name of the lightbox. This is used to identify the lightbox in Google Analytics. Defaults to "4Site Multi-Step Splash".
-- **image** - Main Image of the Lightbox.
-- **logo** - Logo Image Used on the center of the Lightbox. On mobile, it will be scaled down and moved to the top.
-- **title** - Title of the Lightbox.
-- **paragraph** - Content of the Lightbox.
-- **bg_color** - HEX color of the left column background.
-- **text_color** - HEX color of the left column text.
-- **form_color** - HEX color for the form theme.
-- **footer** - Content of the footer.
-- **url** - URL of the donation page - use this option if you want the lightbox to automatically open when the page loads.
-- **cookie_hours** - Number of hours to not auto open the lightbox after the user closes it.
-
-Because the page can have multiple lightbox links, you can share options between them by creating a `DonationLightboxOptions` object. Example:
-
-```javascript
-DonationLightboxOptions = {
-  name: "Super Ultra Mega Donation Lightbox",
-  logo: "https://www.peta.org/wp-content/themes/petaorg/assets/images/peta-logo.svg",
-  footer:
-    "Donations to PETA are in U.S. dollars and are tax-deductible to the fullest extent allowed by U.S. law. PETA's tax ID number is 52-1218336.",
-};
-```
-
-On the example above, the logo and footer will be used for all links.
-
-**Example of Link Without Lightbox:**
+2. Add the iFrame with `dm-iframe` id to the page:
 
 ```html
-<a href="https://support.peta.org/page/32254/donate/1">Give Now</a>
+<iframe
+  id="dm-iframe"
+  data-src="https://donate.shatterproof.org/page/42322/donate/1?mode=DEMO&assets=local&debug=false"
+  data-form_color="#f26722"
+></iframe>
 ```
 
-**Example of Link With Lightbox:**
+You can set a custom color for the form by setting the `data-form_color` attribute.
+Please note that you should set the `src` attribute as `data-src` to prevent the form from loading twice. The script will take the iFrame element and append it to a wrapper, adding the necessary attributes to the iFrame and changing the `src` attribute to the actual form URL.
 
-```html
-<a
-  href="https://support.peta.org/page/32254/donate/1"
-  data-donation-lightbox
-  data-name="Super Ultra Mega Donation Lightbox"
-  data-title="My Title Test"
-  data-paragraph="My paragraph test"
-  >Give Now
-</a>
-```
-
-### IMPORTANT: This project only works with the Engaging Networks Pages using the [engrid-peta theme](https://github.com/4site-interactive-studios/engrid-peta).
+### IMPORTANT: This project only works with the Engaging Networks Pages using the [engrid theme](https://github.com/4site-interactive-studios/engrid).
 
 ## Development
 
@@ -80,7 +41,7 @@ Your js code must be on the `src/app` folder. Styling changes must be on `src/sc
 1. `npm run build` - Builds the project
 2. `npm run watch` - Watch for changes and rebuilds the project
 
-It's going to create a `dist` folder, where you can get the `donation-lightbox-parent.js` file and publish it.
+It's going to create a `dist` folder, where you can get the `donation-multistep-parent.js` file and publish it.
 
-Currently it's published on:  
-https://acb0a5d73b67fccd4bbe-c2d8138f0ea10a18dd4c43ec3aa4240a.ssl.cf5.rackcdn.com/10003/donation-lightbox-parent.js
+Currently it's published on (Shatterproof):  
+https://acb0a5d73b67fccd4bbe-c2d8138f0ea10a18dd4c43ec3aa4240a.ssl.cf5.rackcdn.com/10089/donation-multistep-parent.js

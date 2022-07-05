@@ -1,2 +1,2 @@
-import { DonationLightbox } from "./utils/donation-lightbox";
-export default DonationLightbox;
+import { DonationMultistep } from "./utils/donation-multistep";
+export default DonationMultistep;

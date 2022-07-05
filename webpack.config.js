@@ -10,7 +10,7 @@ const stylesHandler = "style-loader";
 const config = {
   entry: "./src/index.js",
   output: {
-    filename: "donation-lightbox-parent.js",
+    filename: "donation-multistep-parent.js",
     path: path.resolve(__dirname, "dist"),
     clean: true,
   },

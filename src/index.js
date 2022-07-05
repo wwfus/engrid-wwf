@@ -1,11 +1,11 @@
-import DonationLightbox from "./app/app";
+import DonationMultistep from "./app/app";
 import "./scss/main.scss";
 //run();
 window.addEventListener("load", function () {
-  window.DonationLightbox = DonationLightbox;
-  let donationLightbox = new DonationLightbox();
+  window.DonationMultistep = DonationMultistep;
+  let donationMultistep = new DonationMultistep();
   // Set default options
-  if (typeof window.DonationLightboxOptions !== "undefined") {
-    donationLightbox.setOptions(window.DonationLightboxOptions);
+  if (typeof window.DonationMultistepOptions !== "undefined") {
+    donationMultistep.setOptions(window.DonationMultistepOptions);
   }
 });

@@ -13,6 +13,7 @@ export class DonationMultistep {
       name: "4Site Multi-Step iFrame",
       form_color: "#f26722",
       src: "",
+      height: "",
     };
     this.donationinfo = {};
     this.options = { ...this.defaultOptions };
@@ -27,6 +28,7 @@ export class DonationMultistep {
     if ("name" in data) this.options.name = data.name;
     if ("form_color" in data) this.options.form_color = data.form_color;
     if ("src" in data) this.options.src = data.src;
+    if ("height" in data) this.options.height = data.height;
   }
   init() {
     console.log("DonationMultistep: init");
@@ -47,6 +49,8 @@ export class DonationMultistep {
     container.classList.add("foursiteDonationMultistep-container");
     container.id = this.containerID;
 
+    const height = this.options.height ?? "400px";
+
     const markup = `
         <div class="dm-content">
             <div class="dm-loading" style="background-color: ${this.options.form_color}">
@@ -55,7 +59,7 @@ export class DonationMultistep {
                 <div class="double-bounce2"></div>
               </div>
             </div>
-            <iframe allow='payment' loading='lazy' id='dm-iframe' width='100%' scrolling='no' class='dm-iframe' src='${src}' frameborder='0' allowfullscreen></iframe>
+            <iframe style='height: ${height}' allow='payment' loading='lazy' id='dm-iframe' width='100%' scrolling='no' class='dm-iframe' src='${src}' frameborder='0' allowfullscreen></iframe>
         </div>
             `;
     container.innerHTML = markup;

@@ -6,8 +6,7 @@ $content-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
   sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
 
 .foursiteDonationMultistep-container {
-  border-radius: 5px;
-  width: 93%;
+  width: 100%;
   height: auto;
   color: #4f606c;
   font-family: $content-font;
@@ -23,7 +22,6 @@ $content-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
     min-height: 400px;
     overflow: hidden;
     background-color: #fff;
-    border-radius: 5px;
     display: flex;
     margin: auto;
     box-sizing: border-box;
@@ -38,9 +36,12 @@ $content-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
       display: flex;
       justify-content: center;
       align-items: center;
-      transition: top 0.4s ease-in-out;
+      visibility: visible;
+      opacity: 1;
+      transition: visibility 1s linear, opacity 1s linear;
       &.is-loaded {
-        top: -700px;
+        visibility: hidden;
+        opacity: 0;
       }
     }
     iframe {
@@ -62,8 +63,7 @@ $content-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
     color: #fff;
     display: flex;
     align-items: center;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
+    border-radius: 5px;
     -webkit-transform: translateZ(0);
     -webkit-backface-visibility: hidden;
     overflow: hidden;
@@ -128,6 +128,11 @@ $content-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
     }
     &.dm-is-visible {
       bottom: 0;
+    }
+  }
+  @media only screen and (max-width: 380px) {
+    .error-message {
+      border-radius: 0;
     }
   }
   &.thank-you {

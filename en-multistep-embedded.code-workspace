@@ -1,0 +1,14 @@
+{
+  "folders": [
+	{
+		"path": "."
+	},
+	{
+		"path": "../engrid-shatterproof"
+	},
+	{
+		"path": "../engrid-scripts"
+	}
+],
+  "settings": {}
+}

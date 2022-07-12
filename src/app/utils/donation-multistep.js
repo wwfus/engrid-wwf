@@ -14,6 +14,9 @@ export class DonationMultistep {
       form_color: "#f26722",
       src: "",
       height: "",
+      border_radius: "0",
+      loading_color: "#E5E6E8",
+      bounce_color: "#16233f",
     };
     this.donationinfo = {};
     this.options = { ...this.defaultOptions };
@@ -29,6 +32,11 @@ export class DonationMultistep {
     if ("form_color" in data) this.options.form_color = data.form_color;
     if ("src" in data) this.options.src = data.src;
     if ("height" in data) this.options.height = data.height;
+    if ("border_radius" in data)
+      this.options.border_radius = data.border_radius;
+    if ("loading_color" in data)
+      this.options.loading_color = data.loading_color;
+    if ("bounce_color" in data) this.options.bounce_color = data.bounce_color;
   }
   init() {
     console.log("DonationMultistep: init");
@@ -52,14 +60,14 @@ export class DonationMultistep {
     const height = this.options.height ?? "400px";
 
     const markup = `
-        <div class="dm-content">
-            <div class="dm-loading" style="background-color: ${this.options.form_color}">
+        <div class="dm-content" style="border-radius: ${this.options.border_radius}">
+            <div class="dm-loading" style="background-color: ${this.options.loading_color}">
               <div class="spinner">
-                <div class="double-bounce1"></div>
-                <div class="double-bounce2"></div>
+                <div class="double-bounce1" style="background-color: ${this.options.bounce_color}"></div>
+                <div class="double-bounce2" style="background-color: ${this.options.bounce_color}"></div>
               </div>
             </div>
-            <iframe style='height: ${height}' allow='payment' loading='lazy' id='dm-iframe' width='100%' scrolling='no' class='dm-iframe' src='${src}' frameborder='0' allowfullscreen></iframe>
+            <iframe style='height: ${height}; min-height: ${height};' allow='payment' loading='lazy' id='dm-iframe' width='100%' scrolling='no' class='dm-iframe' src='${src}' frameborder='0' allowfullscreen></iframe>
         </div>
             `;
     container.innerHTML = markup;

@@ -17,6 +17,7 @@ export class DonationMultistep {
       border_radius: "0",
       loading_color: "#E5E6E8",
       bounce_color: "#16233f",
+      append_url_params: "false",
     };
     this.donationinfo = {};
     this.options = { ...this.defaultOptions };
@@ -25,8 +26,6 @@ export class DonationMultistep {
   loadOptions() {
     // Get Data Attributes
     let data = this.iframe.dataset;
-    if (this.isDebug())
-      console.log("DonationMultistep: loadOptions: data: ", data);
     // Set Options
     if ("name" in data) this.options.name = data.name;
     if ("form_color" in data) this.options.form_color = data.form_color;
@@ -37,6 +36,10 @@ export class DonationMultistep {
     if ("loading_color" in data)
       this.options.loading_color = data.loading_color;
     if ("bounce_color" in data) this.options.bounce_color = data.bounce_color;
+    if ("append_url_params" in data)
+      this.options.append_url_params = data.append_url_params;
+    if (this.isDebug())
+      console.log("DonationMultistep: loadOptions: options: ", this.options);
   }
   init() {
     console.log("DonationMultistep: init");
@@ -52,6 +55,17 @@ export class DonationMultistep {
     this.containerID = "foursite-" + Math.random().toString(36).substring(7);
 
     src.searchParams.append("color", this.options.form_color);
+
+    if (this.options.height) {
+      src.searchParams.append("height", this.options.height);
+    }
+
+    if (this.options.append_url_params.toLowerCase() === "true") {
+      const urlParams = new URLSearchParams(window.location.search);
+      for (const [key, value] of urlParams) {
+        src.searchParams.append(key, value);
+      }
+    }
 
     const container = document.createElement("div");
     container.classList.add("foursiteDonationMultistep-container");
@@ -92,6 +106,13 @@ export class DonationMultistep {
 
     if ("frameHeight" in message) {
       this.iframe.style.height = message.frameHeight + "px";
+      // Scroll to the top of the iframe smoothly
+      if ("scroll" in message) {
+        this.iframe.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
       return;
     }
 
@@ -159,6 +180,7 @@ export class DonationMultistep {
     const container = this.container.querySelector(".dm-content");
     const errorMessage = document.createElement("div");
     errorMessage.classList.add("error-message");
+    errorMessage.style.borderRadius = this.options.border_radius;
     errorMessage.innerHTML = `<p>${error}</p><a class="close" href="#">Close</a>`;
     errorMessage.querySelector(".close").addEventListener("click", (e) => {
       e.preventDefault();

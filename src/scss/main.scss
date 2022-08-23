@@ -42,9 +42,9 @@ $content-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
       &.is-loaded {
         visibility: hidden;
         opacity: 0;
-        & + iframe {
-          min-height: auto !important;
-        }
+        // & + iframe {
+        //   min-height: auto !important;
+        // }
       }
     }
     iframe {

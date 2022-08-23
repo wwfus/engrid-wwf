@@ -101,13 +101,13 @@ export class DonationMultistep {
 
   // Receive a message from the child iframe
   receiveMessage(event) {
-    console.log("DonationMultistep: receiveMessage: event: ", event.data);
+    // console.log("DonationMultistep: receiveMessage: event: ", event.data);
     const message = event.data;
 
-    if ("frameHeight" in message) {
+    if (message && "frameHeight" in message) {
       this.iframe.style.height = message.frameHeight + "px";
-      // Scroll to the top of the iframe smoothly
-      if ("scroll" in message) {
+      if ("scroll" in message && !this.isInViewport(this.iframe)) {
+        // Scroll to the top of the iframe smoothly
         this.iframe.scrollIntoView({
           behavior: "smooth",
           block: "start",
@@ -256,6 +256,16 @@ export class DonationMultistep {
         eventLabel: label,
       });
     }
+  }
+  isInViewport(el) {
+    const rect = el.getBoundingClientRect();
+    return (
+      rect.top >= 0 &&
+      rect.left >= 0 &&
+      // rect.bottom <=
+      //   (window.innerHeight || document.documentElement.clientHeight) &&
+      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
   }
   isDebug() {
     const regex = new RegExp("[\\?&]debug=([^&#]*)");

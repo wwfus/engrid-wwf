@@ -18,12 +18,28 @@ This project makes it easy to create Multistep Donations Forms on Engaging Netwo
 ```html
 <iframe
   id="dm-iframe"
-  data-src="https://donate.shatterproof.org/page/42322/donate/1?mode=DEMO&assets=local&debug=false"
+  data-src="https://donate.shatterproof.org/page/42322/donate/1?mode=DEMO"
   data-form_color="#f26722"
+  data-height="500px"
+  data-border_radius="5px"
+  data-loading_color="#E5E6E8"
+  data-bounce_color="#16233f"
+  data-append_url_params="false"
 ></iframe>
 ```
 
-You can set a custom color for the form by setting the `data-form_color` attribute.
+## Options
+
+You can define options via data attributes on the iFrame tag. The following options are available:
+
+- `data-src` - The URL of the donation form.
+- `data-form_color` - The theme color of the form.
+- `data-height` - The min-height of the form.
+- `data-border_radius` - The border radius of the form.
+- `data-loading_color` - The color of the loading animation.
+- `data-bounce_color` - The color of the bounce animation.
+- `data-append_url_params` - Whether to append the current URL parameters to the iFrame URL.
+
 Please note that you should set the `src` attribute as `data-src` to prevent the form from loading twice. The script will take the iFrame element and append it to a wrapper, adding the necessary attributes to the iFrame and changing the `src` attribute to the actual form URL.
 
 ### IMPORTANT: This project only works with the Engaging Networks Pages using the [engrid theme](https://github.com/4site-interactive-studios/engrid).

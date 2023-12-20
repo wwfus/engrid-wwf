@@ -1,4 +1,3 @@
-import "./confetti";
 export class DonationMultistep {
   constructor() {
     this.iframe = document.getElementById("dm-iframe");
@@ -104,45 +103,16 @@ export class DonationMultistep {
     // console.log("DonationMultistep: receiveMessage: event: ", event.data);
     const message = event.data;
 
-    if (message && "frameHeight" in message) {
+    if (message && message['frameHeight'] !== undefined) {
       this.iframe.style.height = message.frameHeight + "px";
-      if ("scroll" in message && !this.isInViewport(this.iframe)) {
-        // Scroll to the top of the iframe smoothly
-        this.iframe.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
-      return;
     }
 
-    switch (message.key) {
-      case "status":
-        this.status(message.value, event);
-        break;
-      case "error":
-        this.error(message.value, event);
-        break;
-      case "class":
-        this.container.classList.add(message.value);
-        break;
-      case "donationinfo":
-        this.donationinfo = JSON.parse(message.value);
-        console.log(
-          "DonationMultistep: receiveMessage: donationinfo: ",
-          this.donationinfo
-        );
-        break;
-      case "firstname":
-        const firstname = message.value;
-        const nameHeading = document.querySelector(".dm-celebration h2.name");
-        if (nameHeading) {
-          nameHeading.innerHTML = firstname + ",";
-          if (firstname.length > 12) {
-            nameHeading.classList.add("big-name");
-          }
-        }
-        break;
+    if (message && message['scroll'] !== undefined && !this.isInViewport(this.iframe)) {
+      // Scroll to the top of the iframe smoothly
+      this.iframe.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     }
   }
   status(status, event) {
@@ -165,12 +135,6 @@ export class DonationMultistep {
         document.getElementById("dm-iframe").src = iFrameUrl
           .toString()
           .replace("/donate/1", "/donate/2");
-        break;
-      case "celebrate":
-        const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-        if (!motion.matches) {
-          this.startConfetti();
-        }
         break;
     }
   }
@@ -199,44 +163,6 @@ export class DonationMultistep {
         errorMessage.querySelector(".close").click();
       }, 5000);
     }, 300);
-  }
-  startConfetti() {
-    const duration = 3 * 1000;
-    const animationEnd = Date.now() + duration;
-    const defaults = {
-      startVelocity: 30,
-      spread: 360,
-      ticks: 60,
-      zIndex: 100000,
-      useWorker: false,
-    };
-
-    const randomInRange = (min, max) => {
-      return Math.random() * (max - min) + min;
-    };
-
-    const interval = setInterval(function () {
-      const timeLeft = animationEnd - Date.now();
-
-      if (timeLeft <= 0) {
-        return clearInterval(interval);
-      }
-
-      const particleCount = 50 * (timeLeft / duration);
-      // since particles fall down, start a bit higher than random
-      confetti(
-        Object.assign({}, defaults, {
-          particleCount,
-          origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
-        })
-      );
-      confetti(
-        Object.assign({}, defaults, {
-          particleCount,
-          origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
-        })
-      );
-    }, 250);
   }
   shake() {
     this.container.classList.add("shake");

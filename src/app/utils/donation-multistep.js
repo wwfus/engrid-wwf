@@ -86,6 +86,7 @@ export class DonationMultistep {
     container.innerHTML = markup;
 
     this.container = container;
+    // remove backup button if iframe loads
     this.iframe.parentNode.insertBefore(this.container, this.iframe);
     this.iframe.remove();
     this.iframe = document.getElementById("dm-iframe");
@@ -201,3 +202,4 @@ export class DonationMultistep {
       : decodeURIComponent(results[1].replace(/\+/g, " "));
   }
 }
+const dm = DonationMultistep();

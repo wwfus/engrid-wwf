@@ -1,4 +1,4 @@
-export class DonationMultistep {
+class DonationMultistep {
   constructor() {
     this.iframe = document.getElementById("dm-iframe");
     if (!this.iframe) {
@@ -20,6 +20,9 @@ export class DonationMultistep {
     };
     this.donationinfo = {};
     this.options = { ...this.defaultOptions };
+    this.scrollToQueue = [];
+    this.otherEventQueue = [];
+    this.isProcessingQueue = false;
     this.init();
   }
   loadOptions() {
@@ -47,6 +50,7 @@ export class DonationMultistep {
     this.build();
   }
   build() {
+    this.status("loading");
     if (this.isDebug()) console.log("DonationMultistep: build");
 
     const src = new URL(this.options.src);
@@ -74,19 +78,12 @@ export class DonationMultistep {
 
     const markup = `
         <div class="dm-content" style="border-radius: ${this.options.border_radius}">
-            <div class="dm-loading" style="background-color: ${this.options.loading_color}">
-              <div class="spinner">
-                <div class="double-bounce1" style="background-color: ${this.options.bounce_color}"></div>
-                <div class="double-bounce2" style="background-color: ${this.options.bounce_color}"></div>
-              </div>
-            </div>
             <iframe style='height: ${height}; min-height: ${height};' allow='payment' loading='lazy' id='dm-iframe' width='100%' scrolling='no' class='dm-iframe' src='${src}' frameborder='0' allowfullscreen></iframe>
         </div>
             `;
     container.innerHTML = markup;
 
     this.container = container;
-    // remove backup button if iframe loads
     this.iframe.parentNode.insertBefore(this.container, this.iframe);
     this.iframe.remove();
     this.iframe = document.getElementById("dm-iframe");
@@ -101,27 +98,98 @@ export class DonationMultistep {
 
   // Receive a message from the child iframe
   receiveMessage(event) {
-    // console.log("DonationMultistep: receiveMessage: event: ", event.data);
+    console.log("DonationMultistep: receiveMessage: event: ", event.data);
     const message = event.data;
 
-    if (message && message['frameHeight'] !== undefined) {
-      this.iframe.style.height = message.frameHeight + "px";
+    // Push the event into the appropriate queue
+    if (message && message["scrollTo"] !== undefined) {
+      this.scrollToQueue.push(message);
+    } else {
+      this.otherEventQueue.push(message);
     }
 
-    if (message && message['scroll'] !== undefined && !this.isInViewport(this.iframe)) {
-      // Scroll to the top of the iframe smoothly
-      this.iframe.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
+    // Process the queue
+    setTimeout(() => this.processQueue(), 500);
+
+    // if (message && message["scrollTo"] !== undefined) {
+    //   const scrollToPosition =
+    //     message.scrollTo +
+    //     window.scrollY +
+    //     this.iframe.getBoundingClientRect().top;
+    //   window.scrollTo({
+    //     top: scrollToPosition,
+    //     left: 0,
+    //     behavior: "smooth",
+    //   });
+    //   console.log("iFrame Event - Scrolling Window to " + scrollToPosition);
+    // } else if (message && message["frameHeight"] !== undefined) {
+    //   this.iframe.style.height = message.frameHeight + "px";
+    // } else if (
+    //   message &&
+    //   message["scroll"] !== undefined &&
+    //   !this.isInViewport(this.iframe)
+    // ) {
+    //   // Scroll to the top of the iframe smoothly
+    //   this.iframe.scrollIntoView({
+    //     behavior: "smooth",
+    //     block: "start",
+    //   });
+    // }
   }
+
+  processQueue() {
+    if (this.isProcessingQueue) return;
+
+    this.isProcessingQueue = true;
+
+    // Process scrollTo events first
+    while (this.scrollToQueue.length > 0) {
+      const message = this.scrollToQueue.shift();
+      const scrollToPosition =
+        message.scrollTo +
+        window.scrollY +
+        this.iframe.getBoundingClientRect().top;
+      window.scrollTo({
+        top: scrollToPosition,
+        left: 0,
+        behavior: "smooth",
+      });
+      console.log("iFrame Event - Scrolling Window to " + scrollToPosition);
+    }
+
+    // Process other events
+    while (this.otherEventQueue.length > 0) {
+      const message = this.otherEventQueue.shift();
+      if (message && message["frameHeight"] !== undefined) {
+        this.iframe.style.height = message.frameHeight + "px";
+      } else if (
+        message &&
+        message["scroll"] !== undefined &&
+        !this.isInViewport(this.iframe)
+      ) {
+        // Scroll to the top of the iframe smoothly
+        this.iframe.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+    }
+
+    this.isProcessingQueue = false;
+  }
+
   status(status, event) {
     switch (status) {
       case "loading":
+        // default iframe-container is hidden
+        // show spinny
+        // add timeout of 5 seconds - if timeout: show button
         document.querySelector(".dm-loading").classList.remove("is-loaded");
         break;
       case "loaded":
+        // show iframe-container
+        // hide spinny
+        // hide button just in case
         document.querySelector(".dm-loading").classList.add("is-loaded");
         break;
       case "submitted":
@@ -202,4 +270,4 @@ export class DonationMultistep {
       : decodeURIComponent(results[1].replace(/\+/g, " "));
   }
 }
-const dm = DonationMultistep();
+var multistep_embed = new DonationMultistep();

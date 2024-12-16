@@ -23,6 +23,8 @@ class DonationMultistep {
     this.scrollToQueue = [];
     this.otherEventQueue = [];
     this.isProcessingQueue = false;
+    this.firstFrameHeight = 1;
+    this.firstFrameHeightProcessed = 1;
     this.init();
   }
   loadOptions() {
@@ -98,18 +100,30 @@ class DonationMultistep {
 
   // Receive a message from the child iframe
   receiveMessage(event) {
-    console.log("DonationMultistep: receiveMessage: event: ", event.data);
+    
     const message = event.data;
-
+    
     // Push the event into the appropriate queue
     if (message && message["scrollTo"] !== undefined) {
+console.log("DonationMultistep: receiveMessage: event: ", event.data);
       this.scrollToQueue.push(message);
-    } else {
-      this.otherEventQueue.push(message);
+    } else if (message && (message["frameHeight"] !== undefined || message["scroll"] !== undefined ))  {
+      console.log("DonationMultistep: receiveMessage: event: ", event.data);
+      if (this.firstFrameHeight < 4) {
+console.log('firstFrameHeight');
+         this.otherEventQueue.push(message);
+         this.firstFrameHeight += 1;
+     } else { setTimeout(() =>  this.otherEventQueue.push(message), 200); }
     }
 
     // Process the queue
-    setTimeout(() => this.processQueue(), 500);
+    if (this.firstFrameHeightProcessed < 4) {
+console.log('firstFrameHeightProcessed');
+       this.processQueue();
+       this.firstFrameHeightProcessed += 1;
+    } else {
+       setTimeout(() => this.processQueue(), 200);
+    }
 
     // if (message && message["scrollTo"] !== undefined) {
     //   const scrollToPosition =
@@ -144,6 +158,7 @@ class DonationMultistep {
 
     // Process scrollTo events first
     while (this.scrollToQueue.length > 0) {
+      console.log('processing scrollTo Queue');
       const message = this.scrollToQueue.shift();
       const scrollToPosition =
         message.scrollTo +
@@ -159,6 +174,7 @@ class DonationMultistep {
 
     // Process other events
     while (this.otherEventQueue.length > 0) {
+ console.log('processing otherEventQueue');
       const message = this.otherEventQueue.shift();
       if (message && message["frameHeight"] !== undefined) {
         this.iframe.style.height = message.frameHeight + "px";

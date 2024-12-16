@@ -20,11 +20,6 @@ class DonationMultistep {
     };
     this.donationinfo = {};
     this.options = { ...this.defaultOptions };
-    this.scrollToQueue = [];
-    this.otherEventQueue = [];
-    this.isProcessingQueue = false;
-    this.firstFrameHeight = 1;
-    this.firstFrameHeightProcessed = 1;
     this.init();
   }
   loadOptions() {
@@ -104,62 +99,28 @@ class DonationMultistep {
     const message = event.data;
     
     // Push the event into the appropriate queue
-    if (message && message["scrollTo"] !== undefined) {
-console.log("DonationMultistep: receiveMessage: event: ", event.data);
-      this.scrollToQueue.push(message);
-    } else if (message && (message["frameHeight"] !== undefined || message["scroll"] !== undefined ))  {
-      console.log("DonationMultistep: receiveMessage: event: ", event.data);
-      if (this.firstFrameHeight < 4) {
-console.log('firstFrameHeight');
-         this.otherEventQueue.push(message);
-         this.firstFrameHeight += 1;
-     } else { setTimeout(() =>  this.otherEventQueue.push(message), 200); }
-    }
+    // if (message && message["scrollTo"] !== undefined) {
+      // console.log("DonationMultistep: receiveMessage: event: ", event.data);
+      // this.scrollToQueue.push(message);
+    // } else if (message && (message["frameHeight"] !== undefined || message["scroll"] !== undefined ))  {
+      // console.log("DonationMultistep: receiveMessage: event: ", event.data);
+      // if (this.firstFrameHeight < 4) {
+      //    console.log('firstFrameHeight');
+      //    this.otherEventQueue.push(message);
+      //    this.firstFrameHeight += 1;
+    //  }
+    // }
 
     // Process the queue
-    if (this.firstFrameHeightProcessed < 4) {
-console.log('firstFrameHeightProcessed');
-       this.processQueue();
-       this.firstFrameHeightProcessed += 1;
-    } else {
-       setTimeout(() => this.processQueue(), 200);
-    }
-
-    // if (message && message["scrollTo"] !== undefined) {
-    //   const scrollToPosition =
-    //     message.scrollTo +
-    //     window.scrollY +
-    //     this.iframe.getBoundingClientRect().top;
-    //   window.scrollTo({
-    //     top: scrollToPosition,
-    //     left: 0,
-    //     behavior: "smooth",
-    //   });
-    //   console.log("iFrame Event - Scrolling Window to " + scrollToPosition);
-    // } else if (message && message["frameHeight"] !== undefined) {
-    //   this.iframe.style.height = message.frameHeight + "px";
-    // } else if (
-    //   message &&
-    //   message["scroll"] !== undefined &&
-    //   !this.isInViewport(this.iframe)
-    // ) {
-    //   // Scroll to the top of the iframe smoothly
-    //   this.iframe.scrollIntoView({
-    //     behavior: "smooth",
-    //     block: "start",
-    //   });
+    // if (this.firstFrameHeightProcessed < 4) {
+    //     console.log('firstFrameHeightProcessed');
+    //    this.processQueue();
+    //    this.firstFrameHeightProcessed += 1;
+    // } else {
+    //    setTimeout(() => this.processQueue(), 200);
     // }
-  }
 
-  processQueue() {
-    if (this.isProcessingQueue) return;
-
-    this.isProcessingQueue = true;
-
-    // Process scrollTo events first
-    while (this.scrollToQueue.length > 0) {
-      console.log('processing scrollTo Queue');
-      const message = this.scrollToQueue.shift();
+    if (message && message["scrollTo"] !== undefined) {
       const scrollToPosition =
         message.scrollTo +
         window.scrollY +
@@ -170,29 +131,64 @@ console.log('firstFrameHeightProcessed');
         behavior: "smooth",
       });
       console.log("iFrame Event - Scrolling Window to " + scrollToPosition);
+    } else if (message && message["frameHeight"] !== undefined) {
+      this.iframe.style.height = message.frameHeight + "px";
+    } else if (
+      message &&
+      message["scroll"] !== undefined &&
+      !this.isInViewport(this.iframe)
+    ) {
+      // Scroll to the top of the iframe smoothly
+      this.iframe.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     }
-
-    // Process other events
-    while (this.otherEventQueue.length > 0) {
- console.log('processing otherEventQueue');
-      const message = this.otherEventQueue.shift();
-      if (message && message["frameHeight"] !== undefined) {
-        this.iframe.style.height = message.frameHeight + "px";
-      } else if (
-        message &&
-        message["scroll"] !== undefined &&
-        !this.isInViewport(this.iframe)
-      ) {
-        // Scroll to the top of the iframe smoothly
-        this.iframe.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
-    }
-
-    this.isProcessingQueue = false;
   }
+
+//   processQueue() {
+//     if (this.isProcessingQueue) return;
+
+//     this.isProcessingQueue = true;
+
+//     // Process scrollTo events first
+//     while (this.scrollToQueue.length > 0) {
+//       console.log('processing scrollTo Queue');
+//       const message = this.scrollToQueue.shift();
+
+//       const scrollToPosition =
+//         message.scrollTo +
+//         window.scrollY +
+//         this.iframe.getBoundingClientRect().top;
+//       window.scrollTo({
+//         top: scrollToPosition,
+//         left: 0,
+//         behavior: "smooth",
+//       });
+//       console.log("iFrame Event - Scrolling Window to " + scrollToPosition);
+//     }
+
+//     // Process other events
+//     while (this.otherEventQueue.length > 0) {
+//  console.log('processing otherEventQueue');
+//       const message = this.otherEventQueue.shift();
+//       if (message && message["frameHeight"] !== undefined) {
+//         this.iframe.style.height = message.frameHeight + "px";
+//       } else if (
+//         message &&
+//         message["scroll"] !== undefined &&
+//         !this.isInViewport(this.iframe)
+//       ) {
+//         // Scroll to the top of the iframe smoothly
+//         this.iframe.scrollIntoView({
+//           behavior: "smooth",
+//           block: "start",
+//         });
+//       }
+//     }
+
+//     this.isProcessingQueue = false;
+//   }
 
   status(status, event) {
     switch (status) {

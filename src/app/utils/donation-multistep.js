@@ -20,6 +20,7 @@ class DonationMultistep {
     };
     this.donationinfo = {};
     this.options = { ...this.defaultOptions };
+    this.firstFrameHeight = 1;
     this.init();
   }
   loadOptions() {
@@ -132,7 +133,32 @@ class DonationMultistep {
       });
       console.log("iFrame Event - Scrolling Window to " + scrollToPosition);
     } else if (message && message["frameHeight"] !== undefined) {
-      this.iframe.style.height = message.frameHeight + "px";
+      if (message.pageNumber === 2) {
+        this.iframe.style.height = message.frameHeight + 20 + "px";
+      } else if (this.firstFrameHeight === 2 && window.innerWidth < 1024) {
+        this.iframe.style.height = message.frameHeight + 120 + "px";
+        this.firstFrameHeight += 1;
+        console.log("2nd: receiveMessage: event: ", event.data);
+      } else if (this.firstFrameHeight < 5) {
+        this.iframe.style.height =
+          message.frameHeight +
+          46 +
+          "px";
+        this.firstFrameHeight += 1;
+        console.log("DonationMultistep: receiveMessage: event: ", event.data);
+      } else {
+        setTimeout(() => {
+          this.iframe.style.height =
+            message.frameHeight +
+            46 +
+            "px";
+          this.firstFrameHeight += 1;
+          console.log(
+            "TIMEOUTDonationMultistep: receiveMessage: event: ",
+            event.data
+          );
+        }, 200);
+      }
     } else if (
       message &&
       message["scroll"] !== undefined &&
